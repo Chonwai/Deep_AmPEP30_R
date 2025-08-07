@@ -1,5 +1,7 @@
 # Deep-AmPEP30: 基於深度學習的抗菌肽預測系統
 
+[English](README.md) | [繁體中文](README_zh-TW.md)
+
 ![R](https://img.shields.io/badge/R-276DC3.svg?style=flat&logo=r&logoColor=white)
 ![Keras](https://img.shields.io/badge/Keras-FF0000.svg?style=flat&logo=keras&logoColor=white)
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00.svg?style=flat&logo=tensorflow&logoColor=white)
@@ -238,19 +240,6 @@ Deep-AmPEP30/
 - **蛋白質序列分析**：使用 `seqinr` 和 `protr` 套件建構
 - **機器學習**：由 `keras`、`caret` 和 `randomForest` 提供技術支援
 - **效能最佳化**：經過廣泛的基準測試和生產使用最佳化
-
-## 📞 聯絡資訊
-
-如有問題、建議或合作機會，請聯絡：
-- **專案維護者**：[您的姓名]
-- **電子郵件**：[your.email@domain.com]
-- **問題追蹤**：[GitHub Issues](https://github.com/your-username/Deep-AmPEP30/issues)
-
-## 🔗 相關專案
-
-- **AxPEP 網站伺服器**：[網站介面連結]
-- **AMP 資料庫**：[資料庫連結]
-- **學術發表**：[相關研究論文連結]
 
 ---
 

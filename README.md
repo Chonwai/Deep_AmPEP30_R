@@ -1,5 +1,7 @@
 # Deep-AmPEP30: Deep Learning-Based Antimicrobial Peptide Prediction
 
+[English](README.md) | [繁體中文](README_zh-TW.md)
+
 ![R](https://img.shields.io/badge/R-276DC3.svg?style=flat&logo=r&logoColor=white)
 ![Keras](https://img.shields.io/badge/Keras-FF0000.svg?style=flat&logo=keras&logoColor=white)
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00.svg?style=flat&logo=tensorflow&logoColor=white)
@@ -238,19 +240,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Protein Sequence Analysis**: Built using the `seqinr` and `protr` packages
 - **Machine Learning**: Powered by `keras`, `caret`, and `randomForest`
 - **Performance Optimization**: Extensive benchmarking and optimization for production use
-
-## 📞 Contact
-
-For questions, suggestions, or collaboration opportunities, please contact:
-- **Project Maintainer**: [Your Name]
-- **Email**: [your.email@domain.com]
-- **Issue Tracker**: [GitHub Issues](https://github.com/your-username/Deep-AmPEP30/issues)
-
-## 🔗 Related Projects
-
-- **AxPEP Web Server**: [Link to web interface]
-- **AMP Database**: [Link to database]
-- **Publication**: [Link to associated research paper]
 
 ---
 
