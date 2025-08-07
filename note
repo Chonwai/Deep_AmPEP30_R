@@ -1,0 +1,137 @@
+there are 3258 seqs' length in [5,30] of uniprot_nonamp.fasta, 801 were predicted as amp. error rate: 801/3258=0.2458564
+there are 1529 positive data, error rate: 90/1529=0.058862
+
+c_glabrata seq "MRAKWRKKRVRRLKRKRRKVRARSK" duplicated with negative dataset of model dataset
+
+For the chris_all_seq predicted as AMP rate:
+92500/243072
+[1] 0.3805457
+
+time Rscript AmPEP30-CNN.R #### test Chris_C_grabrata remove duplicate and length in 5a.a. to 30 a.a. 
+237792/237792 [==============================] - 51s 215us/step
+real	222m30.264s
+user	216m37.156s
+sys	13m14.950s
+
+221337/221337 [==============================] - 48s 216us/step
+
+real	182m25.836s
+user	177m3.775s
+sys	12m19.210s
+
+test Chris_C_grabrata remove duplicate and length in 5a.a. to 30 a.a. remove initial M
+time Rscript Deep-AmPEP30.R #### test seq_10000.fasta
+10000/10000 [==============================] - 2s 225us/step
+
+real	0m18.713s
+user	0m27.413s
+sys	0m16.724s
+
+time Rscript Deep-AmPEP30.R #### test seq_10000.fasta
+1000/1000 [==============================] - 0s 275us/step
+
+real	0m5.693s
+user	0m6.715s
+sys	0m7.091s
+
+#############five times feature generation of seq_10000.fasta
+time_use <- function(){start=Sys.time();test_data=totally_psekraac_best5(test_path='seq_10000.fasta',test=T,without_fasta_name=F,check_len=T);end = Sys.time();return(end-start)}
+
+> for (i in 1:5) {print(time_use())}
+Time difference of 0.541904 secs
+Time difference of 0.494992 secs
+Time difference of 0.511941 secs
+Time difference of 0.5150366 secs
+Time difference of 0.513967 secs
+
+> t = c(0.541904,0.494992,0.511941,0.5150366,0.513967)
+> mean(t)
+[1] 0.5155681
+> sd(t)
+[1] 0.01682972
+
+> system.time({test_data=totally_psekraac_best5(test_path='seq_10000.fasta',test   user  system elapsed check_len=T)})
+  1.065   0.005   1.071 
+> system.time({test_data=totally_psekraac_best5(test_path='seq_10000.fasta',test   user  system elapsed check_len=T)})
+  0.964   0.005   0.969 
+> system.time({test_data=totally_psekraac_best5(test_path='seq_10000.fasta',test   user  system elapsed check_len=T)})
+  1.017   0.002   1.025 
+> system.time({test_data=totally_psekraac_best5(test_path='seq_10000.fasta',test   user  system elapsed check_len=T)})
+  1.319   0.005   1.327 
+> system.time({test_data=totally_psekraac_best5(test_path='seq_10000.fasta',test   user  system elapsed check_len=T)})
+  1.071   0.004   1.083 
+#############time using of five times trianing cnn phase 3297 sequences
+develop_cnn_mdl_time_use <- function(){start=Sys.time();develop_cnn_mdl_yan(rf=F);end = Sys.time();return(end-start)}
+
+> for (i in 1:5) {print(develop_cnn_mdl_time_use())}
+Time difference of 3.309102 mins
+Time difference of 3.301854 mins
+Time difference of 3.281501 mins
+Time difference of 3.290262 mins
+Time difference of 3.279592 mins
+> t = c(3.309102,3.301854,3.281501, 3.290262,3.279592)
+> t=t*60
+> t
+[1] 198.5461 198.1112 196.8901 197.4157 196.7755
+> mean(t)
+[1] 197.5477
+> sd(t)
+[1] 0.7682107
+#############time using of five times trianing rf phase 3297 sequences
+> develop_rf_mdl_time_use <- function(){start=Sys.time();develop_cnn_mdl_yan(rf=T);end = Sys.time();return(end-start)}
+> for (i in 1:5) {print(develop_rf_mdl_time_use())}
+Time difference of 28.62537 secs
+Time difference of 28.0576 secs
+Time difference of 28.06883 secs
+Time difference of 27.76012 secs
+Time difference of 27.8914 secs
+> t = c(28.62537,28.0576,28.06883,27.76012,27.8914)
+> mean(t)
+[1] 28.08066
+> sd(t)
+[1] 0.330131
+
+> system.time({develop_cnn_mdl_yan(T)})
+   user  system elapsed 
+ 77.128   0.718  78.182 
+> system.time({develop_cnn_mdl_yan(T)})
+   user  system elapsed 
+ 69.666   0.948  70.856 
+> system.time({develop_cnn_mdl_yan(T)})
+   user  system elapsed 
+ 71.538   0.743  72.504 
+> system.time({develop_cnn_mdl_yan(T)})
+   user  system elapsed 
+ 76.437   0.767  77.495 
+> system.time({develop_cnn_mdl_yan(T)})
+   user  system elapsed 
+ 50.322   0.441  50.883 
+
+#############time using of five times testing cnn phase seq10000 sequences
+> predict_cnn_seq10000_time_use <- function(){start=Sys.time();cnn_yan_predict('seq_10000.fasta');end = Sys.time();return(end-start)}
+> for (i in 1:5) {print(predict_rf_seq10000_time_use())}
+Time difference of 1.824888 secs
+Time difference of 1.719744 secs
+Time difference of 1.718184 secs
+Time difference of 1.664671 secs
+Time difference of 1.707045 secs
+t = c(1.824888,1.719744,1.718184, 1.664671,1.707045)
+> mean(t)
+[1] 1.726906
+> sd(t)
+[1] 0.05915128
+
+#############time using of five times testing rf phase seq10000 sequences
+> predict_rf_seq10000_time_use <- function(){start=Sys.time();rf_yan_predict('seq_10000.fasta');end = Sys.time();return(end-start)}
+> for (i in 1:5) {print(predict_rf_seq10000_time_use())}
+Time difference of 1.743515 secs
+Time difference of 1.69577 secs
+Time difference of 1.631451 secs
+Time difference of 1.704852 secs
+Time difference of 1.717635 secs
+> t = c(1.743515,1.69577,1.631451,1.704852,1.717635)
+> mean(t)
+[1] 1.698645
+> sd(t)
+[1] 0.04164061
+

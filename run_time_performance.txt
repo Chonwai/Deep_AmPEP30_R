@@ -1,0 +1,149 @@
+#feature generation test based on seq_10000.fasta
+ code: time Rscript Deep-AmPEP30.R
+  main code inside: 
+   feature_generation_run_time_performance = totally_psekraac_best5(test_path='seq_10000.fasta',test=T,without_fasta_name=F,check_len=F)
+   1. the 1st time
+	real	0m18.269s
+	ser	0m18.104s
+	sys	0m6.209s
+   2. the 2nd time
+	real	0m18.204s
+	ser	0m17.997s
+	sys	0m6.174s
+   3. the 3rd time
+	real	0m18.086s
+	user	0m17.943s
+	sys	0m6.226s
+   4. the 4th time
+	real	0m18.305s
+	user	0m18.166s
+	sys	0m6.090s
+   5. the 5th time
+	real	0m18.243s
+	user	0m18.097s
+	sys	0m6.115s	
+t = c(18.269, 18.204, 18.086, 18.305, 18.243)
+> mean(t)
+[1] 18.2214
+> sd(t)
+[1] 0.08419798
+
+# training rf-ampep30 model based on 3298 sequences
+ code: time Rscript Deep-AmPEP30.R
+  main code inside:
+   develop_cnn_mdl_yan(rf=T)
+   1. the 1st time
+	real	0m37.979s
+	user	0m37.481s
+	sys	0m6.572s
+   2. the 2nd time
+	real	0m34.142s
+	user	0m33.767s
+	sys	0m6.409s
+   3. the 3rd time
+	real	0m38.016s
+	user	0m37.345s
+	sys	0m6.691s
+   4. the 4th time
+	real	0m39.498s
+	user	0m38.884s
+	sys	0m6.632s
+   5. the 5th time
+	real	0m35.326s
+	user	0m35.100s
+	sys	0m6.255s
+t = c(37.979, 34.142, 38.016, 39.498, 35.326)
+> mean(t)
+[1] 36.9922
+> sd(t)
+[1] 2.190938
+
+# training cnn-ampep30 model based on 3298 sequences
+ code: time Rscript Deep-AmPEP30.R
+  main code inside:
+   develop_cnn_mdl_yan(rf=F)
+   1. the 1st time
+	real	3m11.190s
+	user	24m36.806s
+	sys	14m10.926s
+   2. the 2nd time
+	real	3m3.372s
+	user	23m50.568s
+	sys	11m57.130s
+   3. the 3rd time
+	real	2m55.485s
+	user	23m38.040s
+	sys	11m42.948s
+   4. the 4th time
+	real	2m59.276s
+	user	24m2.961s
+	sys	12m36.039s
+   5. the 5th time
+	real	3m0.779s
+	user	24m15.243s
+	sys	12m38.344s
+t = c(3*60+11.190, 3*60+3.372, 2*60+55.485, 2*60+59.276, 3*60+0.779)
+> mean(t)
+[1] 182.0204
+> sd(t)
+[1] 5.867125
+
+# testing rf-ampep30 model based on seq_10000.fasta
+ code: time Rscript Deep-AmPEP30.R
+  main code inside:
+   rs = rf_yan_predict('seq_10000.fasta',check_len=F)
+   1. the 1st time
+	real	0m23.070s
+	user	0m22.745s
+	sys	0m6.322s
+   2. the 2nd time
+	real	0m22.947s
+	user	0m22.523s
+	sys	0m6.443s
+   3. the 3rd time
+	real	0m22.682s
+	user	0m22.392s
+	sys	0m6.296s
+   4. the 4th time
+	real	0m22.398s
+	user	0m21.994s
+	ys	0m6.399s	
+   5. the 5th time
+	real	0m22.484s
+	user	0m22.180s
+	sys	0m6.271s
+t = c(23.070, 22.947, 22.682, 22.398, 22.484)
+> mean(t)
+[1] 22.7162
+> sd(t)
+[1] 0.2893012
+
+# testing cnn-ampep30 model based on seq_10000.fasta
+ code: time Rscript Deep-AmPEP30.R
+  main code inside:
+   rs = cnn_yan_predict('seq_10000.fasta',check_len=F)
+   1. the 1st time
+	real	0m22.480s
+	user	0m30.947s
+	sys	0m14.085s
+   2. the 2nd time
+	real	0m22.415s
+	user	0m30.198s
+	sys	0m14.253s
+   3. the 3rd time
+	real	0m22.703s
+	user	0m30.766s
+	sys	0m14.047s
+   4. the 4th time
+	real	0m22.389s
+	user	0m30.700s
+	sys	0m13.915s
+   5. the 5th time
+	real	0m22.905s
+	user	0m30.737s
+	sys	0m14.093s
+t=c(22.480, 22.415, 22.703, 22.389, 22.905)
+> mean(t)
+[1] 22.5784
+> sd(t)
+[1] 0.2204808

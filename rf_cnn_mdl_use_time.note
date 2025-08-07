@@ -1,0 +1,45 @@
+######## test seq time
+time Rscript AmPEP30-CNN.R # predict seq_1000.fasta
+
+rf:
+real	0m7.019s
+user	0m6.838s
+sys	0m6.315s
+
+cnn:
+real	0m6.881s
+user	0m7.997s
+sys	0m6.903s
+
+
+time Rscript AmPEP30-CNN.R # predict seq_10000.fasta
+
+rf:
+real	0m31.003s
+user	0m30.142s
+sys	0m6.865s
+
+cnn:
+10000/10000 [==============================] - 2s 221us/step
+
+real	0m22.441s
+user	0m30.422s
+sys	0m16.639s
+
+
+
+############# train model time
+Positive: 1529+122=1651
+Negative: 1529+117=1646
+total: 1651+1646=3297
+
+train cnn:
+real	3m20.301s
+user	27m30.119s
+sys	14m22.884s
+
+train rf:
+real	0m26.823s
+user	0m26.548s
+sys	0m6.415s
+
