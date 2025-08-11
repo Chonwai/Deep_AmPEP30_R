@@ -97,4 +97,7 @@ Thumbs.db
 # Executables
 *.exe
 *.out
+# Microservice temp outputs
+microservice/**/*.out
+microservice/**/*.log
 *.app

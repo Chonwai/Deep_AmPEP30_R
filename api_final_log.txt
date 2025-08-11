@@ -1,0 +1,93 @@
+
+R version 4.3.3 (2024-02-29) -- "Angel Food Cake"
+Copyright (C) 2024 The R Foundation for Statistical Computing
+Platform: aarch64-apple-darwin20 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(plumber); pr <- plumb('microservice/api/ampep30_final_api.R'); pr$run(host='127.0.0.1', port=8002)
+載入演示函數從: ../../AmPEP30_Demo.R 
+
+========================================
+    AmPEP30 抗菌胜肽預測系統演示
+========================================
+
+功能：預測蛋白質序列是否為抗菌胜肽 (AMP)
+模型：隨機森林 (Random Forest)
+序列長度：5-30 氨基酸
+支援氨基酸：ACDEFGHIKLMNPQRSTVWY
+
+正在載入必要套件...
+✓ 套件載入完成
+
+=== 演示案例 ===
+
+1. Magainin-2
+   描述: 已知的青蛙抗菌胜肽
+   序列: GIGKFLHSAKKFGKAFVGEIMNS
+   長度: 23 氨基酸
+   預測: AMP
+   AMP 機率: 0.902 (90.2%)
+   信心度: 0.902
+   解釋: 此序列很可能是抗菌胜肽 (機率: 90.2%)
+
+2. Melittin
+   描述: 蜜蜂毒液中的抗菌胜肽
+   序列: GIGAVLKVLTTGLPALISWIKRKRQQ
+   長度: 26 氨基酸
+   預測: AMP
+   AMP 機率: 0.748 (74.8%)
+   信心度: 0.748
+   解釋: 此序列很可能是抗菌胜肽 (機率: 74.8%)
+
+3. Random_peptide
+   描述: 隨機氨基酸序列
+   序列: ACDEFGHIKL
+   長度: 10 氨基酸
+   預測: Non-AMP
+   AMP 機率: 0.486 (48.6%)
+   信心度: 0.514
+   解釋: 此序列不太可能是抗菌胜肽 (非 AMP 機率: 51.4%)
+
+4. Short_peptide
+   描述: 短肽序列
+   序列: KLMNP
+   長度: 5 氨基酸
+   預測: AMP
+   AMP 機率: 0.513 (51.3%)
+   信心度: 0.513
+   解釋: 此序列很可能是抗菌胜肽 (機率: 51.3%)
+
+=== 使用指南 ===
+
+1. 序列要求：
+   - 長度：5-30 氨基酸
+   - 字符：標準 20 種氨基酸 (ACDEFGHIKLMNPQRSTVWY)
+   - 格式：大小寫不敏感，會自動轉換為大寫
+
+2. 結果解釋：
+   - AMP 機率 > 0.5：預測為抗菌胜肽
+   - AMP 機率 < 0.5：預測為非抗菌胜肽
+   - 信心度：預測的可信程度
+
+3. 模型性能：
+   - 基於隨機森林演算法
+   - 訓練數據：3298 個序列
+   - 特徵：PSEKRAAc (偽氨基酸組成)
+
+演示完成！
+如需預測自己的序列，請調用 predict_peptide(your_sequence) 函數。
+Running plumber API at http://127.0.0.1:8002
+Running swagger Docs at http://127.0.0.1:8002/__docs__/

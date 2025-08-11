@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  deep-ampep30:
+    build:
+      context: ../..
+      dockerfile: microservice/docker/Dockerfile
+    container_name: deep-ampep30
+    environment:
+      - APP_ROOT=/app
+      - PLUMBER_PORT=8002
+      - PLUMBER_HOST=0.0.0.0
+      - ENABLE_RF=true
+      - ENABLE_CNN=false
+      - DEFAULT_METHOD=rf
+      - R_LOG_LEVEL=INFO
+    ports:
+      - "8002:8002"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
