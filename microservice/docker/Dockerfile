@@ -76,10 +76,10 @@ WORKDIR /app
 # Copy project files
 COPY . /app/
 
-EXPOSE 8001
+EXPOSE 8002
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost:8001/health || exit 1
+  CMD curl -f http://localhost:8002/health || exit 1
 
 CMD ["bash", "microservice/scripts/start.sh"]
 
