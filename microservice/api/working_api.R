@@ -64,19 +64,12 @@ predict_amp <- function(fasta_content) {
         prediction <- results[i, 2]
         probability <- as.numeric(results[i, 3])
 
-        pred_label <- if (prediction == 1) {
-          "AMP"
-        } else if (prediction == 0) {
-          "Non-AMP"
-        } else {
-          "Error"
-        }
-
+        # 保持數字格式：1=AMP, 0=Non-AMP, -1=Invalid/Error
         predictions[[i]] <- list(
           sequence_name = seq_name,
-          prediction = pred_label,
+          prediction = prediction, # 直接使用數字
           amp_probability = probability,
-          confidence = if (prediction == 1) probability else (1 - probability)
+          confidence = if (prediction == 1) probability else if (prediction == 0) (1 - probability) else -1
         )
       }
 

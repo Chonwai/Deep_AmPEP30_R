@@ -2,7 +2,7 @@
 set -euo pipefail
 
 export APP_ROOT=${APP_ROOT:-/app}
-export PLUMBER_PORT=${PLUMBER_PORT:-8001}
+export PLUMBER_PORT=${PLUMBER_PORT:-8002}
 export PLUMBER_HOST=${PLUMBER_HOST:-0.0.0.0}
 
 echo "Starting AmPEP30 Final microservice on ${PLUMBER_HOST}:${PLUMBER_PORT}"

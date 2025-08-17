@@ -38,7 +38,7 @@ SERVICE_CONFIG <- list(
   name = safe_get_env("SERVICE_NAME", "deep-ampep30-microservice"),
   version = safe_get_env("SERVICE_VERSION", "1.0.0"),
   host = safe_get_env("PLUMBER_HOST", "0.0.0.0"),
-  port = as.integer(safe_get_env("PLUMBER_PORT", "8001")),
+  port = as.integer(safe_get_env("PLUMBER_PORT", "8002")),
   log_level = safe_get_env("R_LOG_LEVEL", "INFO"),
   default_method = tolower(safe_get_env("DEFAULT_METHOD", "rf"))
 )

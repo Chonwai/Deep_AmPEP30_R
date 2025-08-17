@@ -141,14 +141,18 @@ predict_peptide <- function(sequence, sequence_name = "query", method = "rf") {
           success = TRUE,
           sequence = sequence,
           length = seq_length,
-          prediction = ifelse(prediction == 1, "AMP", "Non-AMP"),
+          prediction = prediction, # 保持數字格式：1=AMP, 0=Non-AMP, -1=Invalid
           amp_probability = probability,
-          confidence = ifelse(prediction == 1, probability, 1 - probability),
+          confidence = ifelse(prediction == 1, probability, ifelse(prediction == 0, 1 - probability, -1)),
           model_used = model_used,
           interpretation = ifelse(
             prediction == 1,
             paste0("此序列很可能是抗菌胜肽 (機率: ", sprintf("%.1f%%", probability * 100), ")"),
-            paste0("此序列不太可能是抗菌胜肽 (非 AMP 機率: ", sprintf("%.1f%%", (1 - probability) * 100), ")")
+            ifelse(
+              prediction == 0,
+              paste0("此序列不太可能是抗菌胜肽 (非 AMP 機率: ", sprintf("%.1f%%", (1 - probability) * 100), ")"),
+              "序列長度不符合要求 (5-30 個氨基酸)"
+            )
           )
         ))
       } else {

@@ -137,12 +137,12 @@ predict_peptide_core <- function(sequence, sequence_name = "query") {
       amp_prob <- as.numeric(prediction[1, "AMP"])
       non_amp_prob <- as.numeric(prediction[1, "non-AMP"])
 
-      # 預測類別
-      predicted_class <- ifelse(amp_prob > 0.5, "AMP", "Non-AMP")
+      # 預測類別（使用數字格式）
+      predicted_class <- ifelse(amp_prob > 0.5, 1, 0) # 1=AMP, 0=Non-AMP
       confidence <- max(amp_prob, non_amp_prob)
 
       # 解釋
-      if (predicted_class == "AMP") {
+      if (predicted_class == 1) {
         interpretation <- sprintf("此序列很可能是抗菌胜肽 (機率: %.1f%%)", amp_prob * 100)
       } else {
         interpretation <- sprintf("此序列不太可能是抗菌胜肽 (非 AMP 機率: %.1f%%)", non_amp_prob * 100)
@@ -152,7 +152,7 @@ predict_peptide_core <- function(sequence, sequence_name = "query") {
         sequence_name = sequence_name,
         sequence = sequence,
         length = seq_length,
-        prediction = predicted_class,
+        prediction = predicted_class, # 數字格式：1=AMP, 0=Non-AMP
         amp_probability = round(amp_prob, 3),
         non_amp_probability = round(non_amp_prob, 3),
         confidence = round(confidence, 3),

@@ -2,7 +2,7 @@ FROM rocker/r-ver:4.3.2
 
 ENV R_LIBS_USER=/usr/local/lib/R/site-library \
     R_LIBS_SITE=/usr/local/lib/R/site-library \
-    PLUMBER_PORT=8001 \
+    PLUMBER_PORT=8002 \
     PLUMBER_HOST=0.0.0.0 \
     APP_ROOT=/app \
     TF_CPP_MIN_LOG_LEVEL=2
