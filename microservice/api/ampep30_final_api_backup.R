@@ -1,4 +1,4 @@
-# AmPEP30 最終API - 基於100%驗證可工作的代碼 - 統一錯誤格式版本
+# AmPEP30 最終API - 基於100%驗證可工作的代碼
 
 library(plumber)
 library(jsonlite)
@@ -102,7 +102,7 @@ function(sequence, name = "query", method = "rf", precision = 3) {
           status = "success"
         )
       } else {
-        # 統一錯誤格式 - 使用與成功響應相同的結構，但加入 error 欄位
+        # 統一錯誤格式 - 使用與成功響應相同的結構
         api_result <- list(
           sequence_name = name,
           sequence = sequence,
@@ -211,16 +211,9 @@ function(fasta_content, method = "rf", precision = 3) {
             status = "success"
           )
         } else {
-          # 統一錯誤格式 - 使用與成功響應相同的結構，但加入 error 欄位
           api_result <- list(
             sequence_name = seq_info$name,
             sequence = seq_info$sequence,
-            length = if (nchar(seq_info$sequence) > 0) nchar(seq_info$sequence) else NA,
-            prediction = NA,
-            amp_probability = NA,
-            non_amp_probability = NA,
-            confidence = NA,
-            model_used = method_norm,
             error = result$error,
             status = "error"
           )
@@ -290,16 +283,9 @@ function() {
             status = "success"
           )
         } else {
-          # 統一錯誤格式 - 使用與成功響應相同的結構，但加入 error 欄位
           api_result <- list(
             sequence_name = seq_info$name,
             sequence = seq_info$sequence,
-            length = if (nchar(seq_info$sequence) > 0) nchar(seq_info$sequence) else NA,
-            prediction = NA,
-            amp_probability = NA,
-            non_amp_probability = NA,
-            confidence = NA,
-            model_used = "rf", # demo 測試默認使用 rf
             error = result$error,
             status = "error"
           )
