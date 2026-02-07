@@ -22,10 +22,7 @@ services:
       start_period: 60s
     restart: unless-stopped
     networks:
-      - deep-ampep30-network
       - axpep-ecosystem-network
 networks:
-  deep-ampep30-network:
-    driver: bridge
   axpep-ecosystem-network:
     external: true
