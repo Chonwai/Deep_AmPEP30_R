@@ -29,6 +29,14 @@ normalize_precision <- function(p) {
   v
 }
 
+# Identify length validation failures to align with script output (-1 values)
+is_length_error <- function(msg) {
+  if (is.null(msg) || !nzchar(msg)) {
+    return(FALSE)
+  }
+  grepl("序列長度必須在 5-30", msg)
+}
+
 # 直接使用已驗證的預測函數
 # 嘗試多個可能的路徑
 possible_demo_paths <- c(
@@ -103,14 +111,15 @@ function(sequence, name = "query", method = "rf", precision = 3) {
         )
       } else {
         # 統一錯誤格式 - 使用與成功響應相同的結構，但加入 error 欄位
+        is_len_error <- is_length_error(result$error)
         api_result <- list(
           sequence_name = name,
           sequence = sequence,
           length = if (nchar(sequence) > 0) nchar(sequence) else NA,
-          prediction = NA,
-          amp_probability = NA,
-          non_amp_probability = NA,
-          confidence = NA,
+          prediction = if (is_len_error) -1 else NA,
+          amp_probability = if (is_len_error) -1 else NA,
+          non_amp_probability = if (is_len_error) -1 else NA,
+          confidence = if (is_len_error) -1 else NA,
           model_used = method_norm,
           error = result$error,
           status = "error"
@@ -212,14 +221,15 @@ function(fasta_content, method = "rf", precision = 3) {
           )
         } else {
           # 統一錯誤格式 - 使用與成功響應相同的結構，但加入 error 欄位
+          is_len_error <- is_length_error(result$error)
           api_result <- list(
             sequence_name = seq_info$name,
             sequence = seq_info$sequence,
             length = if (nchar(seq_info$sequence) > 0) nchar(seq_info$sequence) else NA,
-            prediction = NA,
-            amp_probability = NA,
-            non_amp_probability = NA,
-            confidence = NA,
+            prediction = if (is_len_error) -1 else NA,
+            amp_probability = if (is_len_error) -1 else NA,
+            non_amp_probability = if (is_len_error) -1 else NA,
+            confidence = if (is_len_error) -1 else NA,
             model_used = method_norm,
             error = result$error,
             status = "error"
