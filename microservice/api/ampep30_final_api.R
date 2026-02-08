@@ -122,7 +122,7 @@ function(sequence, name = "query", method = "rf", precision = 3) {
           confidence = if (is_len_error) -1 else NA,
           model_used = method_norm,
           error = result$error,
-          status = "error"
+          status = if (is_len_error) "success" else "error"
         )
       }
 
@@ -232,7 +232,7 @@ function(fasta_content, method = "rf", precision = 3) {
             confidence = if (is_len_error) -1 else NA,
             model_used = method_norm,
             error = result$error,
-            status = "error"
+            status = if (is_len_error) "success" else "error"
           )
         }
 
