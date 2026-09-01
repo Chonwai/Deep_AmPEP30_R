@@ -3,6 +3,11 @@
 library(plumber)
 library(jsonlite)
 
+# Safety limits — prevent runaway computation from hanging the service
+MAX_SEQUENCES_PER_REQUEST <- 500L    # max sequences per /predict/fasta call
+PREDICTION_TIMEOUT_SECS   <- 120L    # per-sequence computation timeout (2 min)
+REQUEST_TIMEOUT_SECS      <- 3600L   # total request timeout (1 hour)
+
 # 嚴格正規化與驗證 method
 normalize_method <- function(method_raw) {
   if (is.null(method_raw) || length(method_raw) == 0) {
@@ -91,8 +96,18 @@ function(sequence, name = "query", method = "rf", precision = 3) {
       }
       precision <- normalize_precision(precision)
 
-      # 使用已驗證的預測函數
-      result <- predict_peptide(sequence, name, method_norm)
+      # per-prediction timeout: prevent single computation from hanging indefinitely
+      setTimeLimit(cpu = PREDICTION_TIMEOUT_SECS, elapsed = PREDICTION_TIMEOUT_SECS, transient = TRUE)
+      result <- tryCatch(
+        predict_peptide(sequence, name, method_norm),
+        error = function(e) {
+          if (grepl("time limit", e$message, ignore.case = TRUE)) {
+            list(success = FALSE, error = paste0("Prediction timeout after ", PREDICTION_TIMEOUT_SECS, "s — sequence may be too complex"))
+          } else {
+            list(success = FALSE, error = e$message)
+          }
+        }
+      )
 
       # 轉換為統一的API格式
       if (result$success) {
@@ -199,11 +214,36 @@ function(fasta_content, method = "rf", precision = 3) {
         ))
       }
 
+      # Layer 1: reject oversized requests before any computation
+      if (length(sequences) > MAX_SEQUENCES_PER_REQUEST) {
+        return(list(
+          status = "error",
+          message = paste0("Too many sequences: ", length(sequences), ". Maximum allowed per request: ", MAX_SEQUENCES_PER_REQUEST, ". Please split into smaller batches."),
+          max_allowed = MAX_SEQUENCES_PER_REQUEST,
+          received = length(sequences),
+          timestamp = format(Sys.time(), "%Y-%m-%dT%H:%M:%S%z")
+        ))
+      }
+
+      # set total-request wall-clock limit before iterating all sequences
+      setTimeLimit(cpu = REQUEST_TIMEOUT_SECS, elapsed = REQUEST_TIMEOUT_SECS, transient = TRUE)
+
       # 對每個序列進行預測
       results <- list()
       for (i in seq_along(sequences)) {
         seq_info <- sequences[[i]]
-        result <- predict_peptide(seq_info$sequence, seq_info$name, method_norm)
+        # per-sequence timeout resets for each iteration
+        setTimeLimit(cpu = PREDICTION_TIMEOUT_SECS, elapsed = PREDICTION_TIMEOUT_SECS, transient = TRUE)
+        result <- tryCatch(
+          predict_peptide(seq_info$sequence, seq_info$name, method_norm),
+          error = function(e) {
+            if (grepl("time limit", e$message, ignore.case = TRUE)) {
+              list(success = FALSE, error = paste0("Timeout after ", PREDICTION_TIMEOUT_SECS, "s"))
+            } else {
+              list(success = FALSE, error = e$message)
+            }
+          }
+        )
 
         if (result$success) {
           pr <- as.numeric(result$amp_probability)

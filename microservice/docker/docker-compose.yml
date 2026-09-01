@@ -15,14 +15,33 @@ services:
     ports:
       - "8002:8002"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      test: ["CMD", "curl", "-f", "--max-time", "8", "http://localhost:8002/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 60s
     restart: unless-stopped
+    # Memory limit prevents runaway R process from consuming all server RAM
+    mem_limit: 4g
+    memswap_limit: 4g
+    labels:
+      - "autoheal=true"
     networks:
       - axpep-ecosystem-network
+
+  # Layer 3: autoheal automatically restarts containers that become unhealthy
+  autoheal:
+    image: willfarrell/autoheal:latest
+    container_name: autoheal-deep-ampep30
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - AUTOHEAL_CONTAINER_LABEL=autoheal
+      - AUTOHEAL_INTERVAL=30
+      - AUTOHEAL_START_PERIOD=60
+      - CURL_TIMEOUT=30
+
 networks:
   axpep-ecosystem-network:
     external: true
